@@ -104,5 +104,18 @@
       // Return joined class
       return rtnClass.join(' ');
     }
+    
+    /**
+     * on update
+     *
+     * @type {*}
+     */
+    this.on('update', () => {
+      // set children
+      this.level    = (opts.level || 0);
+      this.children = opts.children;
+      
+    });
+    
   </script>
 </menu-children>
