@@ -6,11 +6,10 @@ const Helper = require('helper');
  * Build menu helper class
  */
 class MenuHelper extends Helper {
-
   /**
    * Construct datagrid helper
    */
-  constructor () {
+  constructor() {
     // Run super
     super();
 
@@ -27,7 +26,7 @@ class MenuHelper extends Helper {
    * @param {Object} item
    * @param {Object} res
    */
-  create (type, route, item, res) {
+  create(type, route, item, res) {
     // Check if type
     if (!res.locals.menus || !res.locals.menus[type]) return;
 
@@ -42,7 +41,7 @@ class MenuHelper extends Helper {
    * @param {Object} item
    * @param {Object} res
    */
-  update (type, route, item, res) {
+  update(type, route, item, res) {
     // Check if type
     if (!res.locals.menus || !res.locals.menus[type]) return;
 
@@ -51,7 +50,7 @@ class MenuHelper extends Helper {
       // Remove menu if it is this
       if (res.locals.menus[type][i].route === route) {
         // Loop item changes
-        for (let key in item) {
+        for (const key in item) {
           // Alter menu item
           res.locals.menus[type][i][key] = item[key];
         }
@@ -65,7 +64,7 @@ class MenuHelper extends Helper {
    * @param {String} route
    * @param {Object} res
    */
-  remove (type, route, res) {
+  remove(type, route, res) {
     // Check if type
     if (!res.locals.menus || !res.locals.menus[type]) return;
 

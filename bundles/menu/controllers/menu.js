@@ -15,11 +15,10 @@ const menuConfig = cache('menus');
  * @priority 5
  */
 class MenuController extends Controller {
-
   /**
    * Construct home controller
    */
-  constructor () {
+  constructor() {
     // Run super
     super();
 
@@ -38,7 +37,7 @@ class MenuController extends Controller {
    *
    * @param {express} app
    */
-  build () {
+  build() {
     // On render
     this.eden.pre('view.compile', (render) => {
       // Return
@@ -101,14 +100,14 @@ class MenuController extends Controller {
 
     // register simple block
     BlockHelper.block('menu.element', {
-      'acl'         : false,
-      'for'         : ['frontend'],
-      'title'       : 'Menu Block',
-      'description' : 'Menu block'
+      acl         : false,
+      for         : ['frontend'],
+      title       : 'Menu Block',
+      description : 'Menu block',
     }, async (req, block) => {
       // return
       return {
-        'tag' : 'menu'
+        tag : 'menu',
       };
     }, async (req, block) => { });
   }
@@ -122,20 +121,20 @@ class MenuController extends Controller {
    *
    * @return {Array}
    */
-  async _menus (User, menus) {
+  async _menus(User, menus) {
     // Clone menus
-    let Menus = JSON.parse(JSON.stringify(menus));
+    const Menus = JSON.parse(JSON.stringify(menus));
 
     // Add hook
     await this.eden.hook('menus.init', Menus);
 
     // Loop menu types
-    for (let type in Menus) {
+    for (const type in Menus) {
       // Check property
       if (!Menus.hasOwnProperty(type)) continue;
 
       // Set routes
-      let Routes = [];
+      const Routes = [];
 
       // Set menu
       Menus[type] = Menus[type] || [];
