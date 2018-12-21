@@ -4,9 +4,8 @@ riot.mixin('menu', {
   /**
    * On init function
    */
-  'init' : function () {
+  init() {
     // Set value
     this.menu = this.eden.get('menus');
-
-  }
+  },
 });
