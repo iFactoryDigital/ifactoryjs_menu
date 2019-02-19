@@ -44,7 +44,7 @@
       // Check for opts class
       rtnClass.push(opts.classes && opts.classes.item ? opts.classes.item : 'nav-item');
       rtnClass.push(this.getChildren(item).length ? 'has-children' : '');
-      rtnClass.push(this.mnt.path.indexOf(item.route) === 0 && (item.route === this.mnt.path || item.route !== opts.base) && (item.route !== '/' || this.mnt.path === '/') ? 'active' : '');
+      if (this.isActive(item)) rtnClass.push('active');
 
       // Join class
       return rtnClass.join(' ').split('  ').join(' ');
@@ -63,7 +63,7 @@
 
       // Check for opts class
       rtnClass.push(opts.classes && opts.classes.link ? opts.classes.link : 'nav-link');
-      rtnClass.push(this.mnt.path.indexOf(item.route) === 0 && (item.route === this.mnt.path || item.route !== opts.base) && (item.route !== '/' || this.mnt.path === '/') ? 'active' : '');
+      if (this.isActive(item)) rtnClass.push('active');
 
       // Return joined class
       return rtnClass.join(' ');
@@ -103,6 +103,24 @@
 
       // Return joined class
       return rtnClass.join(' ');
+    }
+    
+    /**
+     * returns is active
+     *
+     * @param  {Object}  item
+     *
+     * @return {Boolean}
+     */
+    isActive (item) {
+      // find active children
+      if ((this.getChildren(item) || []).find((i) => {
+        // return child active
+        return this.mnt.path.indexOf(i.route) === 0 && (i.route === this.mnt.path || i.route !== opts.base) && (i.route !== '/' || this.mnt.path === '/');
+      })) return true;
+
+      // return is active
+      return this.mnt.path.indexOf(item.route) === 0 && (item.route === this.mnt.path || item.route !== opts.base) && (item.route !== '/' || this.mnt.path === '/');
     }
     
     /**
