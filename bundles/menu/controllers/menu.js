@@ -40,11 +40,17 @@ class MenuController extends Controller {
   build() {
     // On render
     this.eden.pre('view.compile', (render) => {
+      // get menus
+      const menus = render.state.menus;
+
+      // Delete from state
+      delete render.state.menus;
+
       // Return
-      if (render.isJSON) return;
+      if (render.isJSON || !menus) return;
 
       // Move menus
-      if (render.state.menus) render.menus = render.state.menus;
+      render.menus = menus;
 
       // Loop menu
       (Object.keys(render.menus) || []).forEach((key) => {
@@ -54,9 +60,6 @@ class MenuController extends Controller {
           return b.priority === a.priority ? 0 : (b.priority < a.priority ? -1 : 1);
         });
       });
-
-      // Delete from state
-      delete render.state.menus;
     });
 
     // Set app
