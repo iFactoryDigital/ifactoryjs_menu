@@ -1,6 +1,6 @@
 <menu-children>
   <ul class="{ opts.classes && opts.classes.main ? opts.classes.main : 'nav' } level-{ this.level }" if={ this.children }>
-    <li each={ item, i in this.children } class={ renderMainClass(item) } if={ item.acl && item.acl.length ? this.acl.validate(item.acl) : true }>
+    <li each={ item, i in this.children } class={ renderMainClass(item) } if={ typeof item.acl !== 'undefined' ? this.acl.validate(item.acl) : true }>
       <a class={ renderLinkClass(item) } href={ item.route }>
         <i if={ item.icon } class="{ item.icon }" />
         { this.t(item.title) }
