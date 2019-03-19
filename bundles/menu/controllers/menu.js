@@ -3,8 +3,8 @@
 const Controller = require('controller');
 
 // Require helpers
-const MenuHelper  = helper('menu');
-const BlockHelper = helper('cms/block');
+const menuHelper  = helper('menu');
+const blockHelper = helper('cms/block');
 
 // Require cache
 const menuConfig = cache('menus');
@@ -73,7 +73,7 @@ class MenuController extends Controller {
       // Add function
       req.menu.create = (type, route, item) => {
         // Add menu item
-        MenuHelper.create(type, route, item, res);
+        menuHelper.create(type, route, item, res);
 
         // Return
         return req.menu;
@@ -82,7 +82,7 @@ class MenuController extends Controller {
       // Edit function
       req.menu.update = (type, route, item) => {
         // Edit menu item
-        MenuHelper.update(type, route, item, res);
+        menuHelper.update(type, route, item, res);
 
         // Return
         return req.menu;
@@ -91,7 +91,7 @@ class MenuController extends Controller {
       // Remove function
       req.menu.remove = (type, route) => {
         // Remove menu item
-        MenuHelper.remove(type, route, res);
+        menuHelper.remove(type, route, res);
 
         // Return
         return req.menu;
@@ -102,7 +102,7 @@ class MenuController extends Controller {
     });
 
     // register simple block
-    BlockHelper.block('menu.element', {
+    blockHelper.block('menu.element', {
       acl         : false,
       for         : ['frontend'],
       title       : 'Menu Block',

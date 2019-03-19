@@ -31,7 +31,7 @@ class MenuHelper extends Helper {
     if (!res.locals.menus || !res.locals.menus[type]) return;
 
     // @todo complete and test this logic
-    console.log(route);
+    return this.update(type, route, item, res);
   }
 
   /**
@@ -45,6 +45,9 @@ class MenuHelper extends Helper {
     // Check if type
     if (!res.locals.menus || !res.locals.menus[type]) return;
 
+    // check found
+    let found = null;
+
     // Loop menus
     for (let i = (res.locals.menus[type].length - 1); i >= 0; i--) {
       // Remove menu if it is this
@@ -54,8 +57,17 @@ class MenuHelper extends Helper {
           // Alter menu item
           res.locals.menus[type][i][key] = item[key];
         }
+
+        // set found
+        found = true;
       }
     }
+
+    // add new item
+    if (!found) res.locals.menus[type].push({
+      route,
+      ...item,
+    });
   }
 
   /**
