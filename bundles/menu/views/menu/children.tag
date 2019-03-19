@@ -120,7 +120,7 @@
       })) return true;
 
       // return is active
-      return this.mnt.path.indexOf(item.route) === 0 && (item.route === this.mnt.path || item.route !== opts.base) && (item.route !== '/' || this.mnt.path === '/');
+      return this.mnt.path === item.route;
     }
     
     /**
