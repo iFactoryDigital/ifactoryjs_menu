@@ -56,8 +56,12 @@ class MenuController extends Controller {
       (Object.keys(render.menus) || []).forEach((key) => {
         // Get classes
         render.menus[key].sort((a, b) => {
+          // set default priority
+          if (!a.priority) a.priority = 0;
+          if (!b.priority) b.priority = 0;
+
           // Return sort
-          return b.priority === a.priority ? 0 : (b.priority < a.priority ? -1 : 1);
+          return parseInt(b.priority) === parseInt(a.priority) ? 0 : (parseInt(b.priority) < parseInt(a.priority) ? -1 : 1);
         });
       });
     });
