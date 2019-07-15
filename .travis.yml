@@ -1,0 +1,21 @@
+language: node_js
+node_js:
+- '10'
+sudo: false
+install:
+- npm install --only=dev
+- npm ci
+before_script:
+- node node_modules/eslint/bin/eslint.js .
+script:
+- node ./index.js help
+after_script:
+- npm test
+deploy:
+  provider: npm
+  email: alex@edenup.com
+  api_key:
+    secure: KrL750ix8bfuzmmM9SEk0CdtHfROWlR6m5EaHDitCbqZXu+l5J/UQTXo+3cwrM5Q7MkNsRM9XN2M7HaKbK9ca9iyDcdpgwBEH6ewF0+0JoXf72CaaeaUPhNCn8r26J+RikEEv9aFftgA4de0VhxVOwgx8/s3M10WGsAF9gNiFQKiA/EQs+L7eKGqp3we9PWJlxPPl/ewPRYldss1xYzuaEeuQ46cbGLeQ8XtH9FPAQQj2GoQFSK+mVoAEBTytkZbFVp+jW3kZ7vj/wgIuQQC3xTKuU1+XogO6QIMx2e+V7t0D3TnHqxAnRz2VoAqxmZzfyg9aHXdtDId+wfJwdbYGeDceH3U7Mq4P3c4EfR744eUwrYaNEpccXo1lPOb67cCNDJDVrA76GhHMi+Szuyj9uzRwynRetB97xET3sCQK/bHo9ZgMX20StRppGF4TOgukcSi9E8/ZXa0sMOCLwUBnvxA59fJ42BXRjxe35imLmt8LNFfbBalt7Z4q1j5vYaavToNCl+am6ozgmGHcq0a4Pecdt2V6ZRyZCyn0xBGLsZdlcknlbwZLe6Sz+djb53RF6wlMMCru/ovRJEKyMNcGUtT/E3IFGm2CRElUsdLK7vKUb07A2DwTKz52p+/1KUswb/EmuTGZo/+wXaX7Vs5bfkHzCj7Vt2d8kq9FBOO26I=
+  on:
+    tags: true
+    repo: eden-js/menu
