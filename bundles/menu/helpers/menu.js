@@ -28,7 +28,7 @@ class MenuHelper extends Helper {
    */
   create(type, route, item, res) {
     // Check if type
-    if (!res.locals.menus || !res.locals.menus[type]) return;
+    if (!res.locals.menus || !res.locals.menus[type]) return null;
 
     // @todo complete and test this logic
     return this.update(type, route, item, res);
@@ -49,14 +49,14 @@ class MenuHelper extends Helper {
     let found = null;
 
     // Loop menus
-    for (let i = (res.locals.menus[type].length - 1); i >= 0; i--) {
+    for (let i = (res.locals.menus[type].length - 1); i >= 0; i -= 1) {
       // Remove menu if it is this
       if (res.locals.menus[type][i].route === route) {
         // Loop item changes
-        for (const key in item) {
+        Object.keys(item).forEach((key) => {
           // Alter menu item
           res.locals.menus[type][i][key] = item[key];
-        }
+        });
 
         // set found
         found = true;
@@ -64,10 +64,12 @@ class MenuHelper extends Helper {
     }
 
     // add new item
-    if (!found) res.locals.menus[type].push({
-      route,
-      ...item,
-    });
+    if (!found) {
+      res.locals.menus[type].push({
+        route,
+        ...item,
+      });
+    }
   }
 
   /**
@@ -81,7 +83,7 @@ class MenuHelper extends Helper {
     if (!res.locals.menus || !res.locals.menus[type]) return;
 
     // Loop menus
-    for (let i = (res.locals.menus[type].length - 1); i >= 0; i--) {
+    for (let i = (res.locals.menus[type].length - 1); i >= 0; i -= 1) {
       // Remove menu if it is this
       if (res.locals.menus[type][i].route === route) res.locals.menus[type].splice(i, 1);
     }
@@ -93,4 +95,4 @@ class MenuHelper extends Helper {
  *
  * @return {MenuHelper}
  */
-exports = module.exports = new MenuHelper();
+module.exports = new MenuHelper();

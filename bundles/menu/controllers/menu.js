@@ -41,7 +41,7 @@ class MenuController extends Controller {
     // On render
     this.eden.pre('view.compile', (render) => {
       // get menus
-      const menus = render.state.menus;
+      const { menus } = render.state;
 
       // Delete from state
       delete render.state.menus;
@@ -56,12 +56,16 @@ class MenuController extends Controller {
       (Object.keys(render.menus) || []).forEach((key) => {
         // Get classes
         render.menus[key].sort((a, b) => {
-          // set default priority
-          if (!a.priority) a.priority = 0;
-          if (!b.priority) b.priority = 0;
+          // get priorities
+          const aP = parseInt(a.priority || 0, 10);
+          const bP = parseInt(b.priority || 0, 10);
 
-          // Return sort
-          return parseInt(b.priority) === parseInt(a.priority) ? 0 : (parseInt(b.priority) < parseInt(a.priority) ? -1 : 1);
+          // order
+          if (bP < aP) return -1;
+          if (aP < bP) return 1;
+
+          // no movement
+          return 0;
         });
       });
     });
@@ -111,12 +115,12 @@ class MenuController extends Controller {
       for         : ['frontend'],
       title       : 'Menu Block',
       description : 'Menu block',
-    }, async (req, block) => {
+    }, async () => {
       // return
       return {
         tag : 'menu',
       };
-    }, async (req, block) => { });
+    }, async () => { });
   }
 
 
@@ -136,10 +140,7 @@ class MenuController extends Controller {
     await this.eden.hook('menus.init', Menus);
 
     // Loop menu types
-    for (const type in Menus) {
-      // Check property
-      if (!Menus.hasOwnProperty(type)) continue;
-
+    Object.keys(Menus).forEach((type) => {
       // Set routes
       const Routes = [];
 
@@ -147,7 +148,7 @@ class MenuController extends Controller {
       Menus[type] = Menus[type] || [];
 
       // Loop actual menus
-      for (let i = (Menus[type].length - 1); i >= 0; i--) {
+      for (let i = (Menus[type].length - 1); i >= 0; i -= 1) {
         // Check routes
         if (Routes.includes(Menus[type][i].route)) {
           // Delete from menu
@@ -167,9 +168,12 @@ class MenuController extends Controller {
         delete Menus[type];
 
         // Continue
-        continue;
+        return null;
       }
-    }
+
+      // return
+      return null;
+    });
 
     // Return menus
     return Menus;
@@ -181,4 +185,4 @@ class MenuController extends Controller {
  *
  * @type {menu}
  */
-exports = module.exports = MenuController;
+module.exports = MenuController;
