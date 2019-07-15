@@ -1,0 +1,38 @@
+<eden-menu>
+  <menu-children children={ getMenu(props.name) } name={ props.name } classes={ props.classes } />
+
+  <script>
+    // import dependencies
+    import Base from '../js/base';
+
+    // export menu base
+    export default class Menu extends Base {
+
+      /**
+       * on before mount
+       */
+      onBeforeMount() {
+        // run super
+        super.onBeforeMount(...arguments);
+
+        // menus
+        this.menu = this.eden.get('menus') || {};
+      }
+
+      /**
+       * Gets menu
+       *
+       * @param  {String} name
+       *
+       * @return {Array}
+       */
+      getMenu (name) {
+        // Get menu
+        let menu = (this.menu[name] || []).filter((m) => !m.parent);
+
+        // Return menu
+        return menu;
+      }
+    }
+  </script>
+</eden-menu>

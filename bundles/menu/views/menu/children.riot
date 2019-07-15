@@ -1,0 +1,138 @@
+<menu-children>
+  <ul class={ `${props.classes && props.classes.main ? props.classes.main : 'nav'} level-${this.level}` } if={ this.children }>
+    <li each={ (item, i) in this.children } class={ renderMainClass(item) } if={ typeof item.acl !== 'undefined' ? eden.get('user.acl.validate')(item.acl) : true }>
+      <a class={ renderLinkClass(item) } href={ item.route }>
+        <i if={ item.icon } class={ item.icon } />
+        { eden.get('i18n.t')(item.title) }
+      </a>
+      <menu-children children={ getChildren(item) } name={ props.name } classes={ props.classes } level={ this.level + 1 } />
+    </li>
+  </ul>
+
+  <script>
+    // import base
+    import Base from '../js/base';
+
+    // export default
+    export default class MenuChildren extends Base {
+
+      /**
+       * on before mount
+       *
+       * @param {Object} props
+       */
+      onBeforeMount(props) {
+        // run in super
+        super.onBeforeMount(...arguments);
+
+        // set children
+        this.menu     = this.eden.get('menus');
+        this.level    = (props.level || 0);
+        this.children = props.children;
+      }
+
+      /**
+       * Check if item has children
+       *
+       * @param {object} item
+       */
+      getChildren (item) {
+        // return found
+        return this.menu[this.props.name].filter((m) => m.parent === item.route);
+      }
+
+      /**
+       * Renders main class
+       *
+       * @param  {object} item
+       *
+       * @return {string}
+       */
+      renderMainClass (item) {
+        // Set class
+        const rtnClass = [];
+
+        // Check for opts class
+        rtnClass.push(this.props.classes && this.props.classes.item ? this.props.classes.item : 'nav-item');
+        rtnClass.push(this.getChildren(item).length ? 'has-children' : '');
+        if (this.isActive(item)) rtnClass.push('active');
+
+        // Join class
+        return rtnClass.join(' ').split('  ').join(' ');
+      }
+
+      /**
+       * Renders link class
+       *
+       * @param  {object} item
+       *
+       * @return {string}
+       */
+      renderLinkClass (item) {
+        // Set class
+        const rtnClass = [];
+
+        // Check for opts class
+        rtnClass.push(this.props.classes && this.props.classes.link ? this.props.classes.link : 'nav-link');
+        if (this.isActive(item)) rtnClass.push('active');
+
+        // Return joined class
+        return rtnClass.join(' ');
+      }
+
+      /**
+       * Renders dropdown class
+       *
+       * @param  {object} item
+       *
+       * @return {string}
+       */
+      renderDropdownClass (item) {
+        // Set class
+        const rtnClass = [];
+
+        // Check for opts class
+        rtnClass.push(this.props.classes && this.props.classes.dropdown ? this.props.classes.dropdown : 'dropdown-menu');
+
+        // Return joined class
+        return rtnClass.join(' ');
+      }
+
+      /**
+       * Renders dropdown link class
+       *
+       * @param  {object} item
+       *
+       * @return {string}
+       */
+      renderDropdownLink (item) {
+        // Set class
+        const rtnClass = [];
+
+        // Check for opts class
+        rtnClass.push(this.props.classes && this.props.classes.sub ? this.props.classes.sub : 'dropdown-menu');
+
+        // Return joined class
+        return rtnClass.join(' ');
+      }
+      
+      /**
+       * returns is active
+       *
+       * @param  {Object}  item
+       *
+       * @return {Boolean}
+       */
+      isActive (item) {
+        // find active children
+        if ((this.getChildren(item) || []).find((i) => {
+          // return child active
+          return this.eden.get('mount.path').indexOf(i.route) === 0 && (i.route === this.eden.get('mount.path') || i.route !== this.props.base) && (i.route !== '/' || this.eden.get('mount.path') === '/');
+        })) return true;
+
+        // return is active
+        return this.eden.get('mount.path') === item.route;
+      }
+    }    
+  </script>
+</menu-children>
