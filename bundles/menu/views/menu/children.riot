@@ -1,6 +1,6 @@
 <menu-children>
   <ul class={ `${props.classes && props.classes.main ? props.classes.main : 'nav'} level-${this.level}` } if={ this.children }>
-    <li each={ (item, i) in this.children } class={ renderMainClass(item) } if={ typeof item.acl !== 'undefined' ? eden.get('user.acl.validate')(item.acl) : true }>
+    <li each={ (item, i) in this.children } class={ renderMainClass(item) } if={ typeof item.acl !== 'undefined' ? user.acl.validate(item.acl) : true }>
       <a class={ renderLinkClass(item) } href={ item.route }>
         <i if={ item.icon } class={ item.icon } />
         { eden.get('i18n.t')(item.title) }
@@ -12,6 +12,7 @@
   <script>
     // import base
     import Base from '../js/base';
+    import UserMixin from '../js/user';
 
     // export default
     export default class MenuChildren extends Base {
@@ -29,6 +30,9 @@
         this.menu     = this.eden.get('menus');
         this.level    = (props.level || 0);
         this.children = props.children;
+
+        // mixin user
+        UserMixin(this);
       }
 
       /**
