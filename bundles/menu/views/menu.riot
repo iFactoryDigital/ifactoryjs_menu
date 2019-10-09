@@ -1,0 +1,25 @@
+<menu>
+  <div is="menu-children" subs={ getMenu() } name={ props.name } classes={ props.classes } />
+
+  <script>
+    // import base
+    import Base from './js/base';
+
+    // export default
+    export default class MenuChildren extends Base {
+
+      /**
+      * Gets menu
+      *
+      * @param  {String} name
+      *
+      * @return {Array}
+      */
+      getMenu () {
+        // Get menu
+        return this.eden.get(`menus.${this.props.name}`, []).filter((m) => !m.parent);
+      }
+        
+    }
+  </script>
+</menu>
