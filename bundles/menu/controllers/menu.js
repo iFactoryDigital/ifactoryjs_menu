@@ -40,6 +40,7 @@ class MenuController extends Controller {
   build() {
     // On render
     this.eden.pre('view.compile', (render) => {
+
       // get menus
       const { menus } = render.state;
 
